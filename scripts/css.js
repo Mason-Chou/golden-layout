@@ -28,6 +28,7 @@ const buildFile = async (filePath) => {
 ensureFolder("./dist");
 ensureFolder("./dist/css");
 ensureFolder("./dist/css/themes");
+ensureFolder("./dist/img");
 
 // Build base.less file
 buildFile("./src/less/goldenlayout-base.less");
@@ -35,4 +36,13 @@ buildFile("./src/less/goldenlayout-base.less");
 // Build every theme
 fs.readdirSync("./src/less/themes").forEach(file => {
     buildFile(path.join(`./src/less/themes/`, file));
+});
+
+// Copy the img folder to the dist folder.
+fs.readdirSync("./src/img").forEach(file => {
+  var input = path.join("./src/img/", file);
+  var output = path.join("./dist/img/", file);
+  fs.copyFile(input, output, err => {
+    if (err) console.error(err);
+  });
 });
